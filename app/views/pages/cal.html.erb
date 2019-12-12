@@ -47,12 +47,12 @@
       <td><%=@al_a[i].round(4)%></td>
       <td><%=@r_a[i].round(4)%></td>
       <td><%=@v[i].round(2)%></td>
-      <td><%=@y[i].round(4)%></td>
+      <td><%=@df_y[i]%></td>
       <td><%=@s[i].round(4)%></td>
       <td><%=@z[i].round(2)%></td>
       <td><%=@u[i].round(4)%></td>
       <td><%=@o[i].round(4)%></td>
-      <td><%=@y_r[i].round(4)%></td>
+      <td><%=@df_y_r[i]%></td>
     </tr>
   <%end%>
 </table>
@@ -100,11 +100,13 @@
   <tr>
     <th>Рівень міркування </th>
     <th>y</th>
+    <th>Ступінь</th>
   </tr>
   <%@y.each do |i,y|%>
     <tr>
       <td><%=i%></td>
       <td><%=y.round(4)%></td>
+      <td><%= @df_y[i]%></td>
     </tr>
   <%end%>
 </table>
@@ -147,11 +149,13 @@
   <tr>
     <th>Рівень міркування </th>
     <th>y</th>
+    <th>Ступінь</th>
   </tr>
   <%@y_r.each do |i,y|%>
     <tr>
       <td><%=i%></td>
       <td><%=y.round(4)%></td>
+      <td><%= @df_y_r[i]%></td>
     </tr>
   <%end%>
 </table>

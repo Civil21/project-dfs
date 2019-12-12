@@ -78,6 +78,15 @@ class PagesController < ApplicationController
     @y[2] = 1 - (1..@n).collect { |i| (1 - @r_a[i])**@v[i] }.inject(1) { |res, value| res * value }
     @y[3] = 1 - (1..@n).collect { |i| @v[i] * (1 - @r_a[i]) }.sum
     @y[4] = 1 - Math.sqrt((1..@n).collect { |i| (@v[i] * (1 - @r_a[i]))**2 }.sum)
+    @df_y = {}
+    @y.each do |y, v|
+      df_y.each do |df, value|
+        if v > value[0] && v <= value[1]
+          @df_y[y] = df
+          break
+        end
+      end
+    end
     # # step 6
     # #pp [sl,t_a,v_a]
     @s = {}
@@ -108,6 +117,15 @@ class PagesController < ApplicationController
     @y_r[2] = 1 - (1..@n).collect { |i| (1 - @o[i])**@v[i] }.inject(1) { |res, value| res * value }
     @y_r[3] = 1 - (1..@n).collect { |i| @v[i] * (1 - @o[i]) }.sum
     @y_r[4] = 1 - Math.sqrt((1..@n).collect { |i| (@v[i] * (1 - @o[i]))**2 }.sum)
+    @df_y_r = {}
+    @y_r.each do |y, v|
+      df_y.each do |df, value|
+        if v > value[0] && v <= value[1]
+          @df_y_r[y] = df
+          break
+        end
+      end
+    end
   end
 
   def ret
