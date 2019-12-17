@@ -12,6 +12,7 @@ class PagesController < ApplicationController
     as = params[:table]
     @n = as[:n].to_i
     @m = as[:m].to_i
+    @y_i = as[:y].to_i
     # step 1
     @x_a = {}
     @f_a = {}
@@ -49,7 +50,7 @@ class PagesController < ApplicationController
           v_a[a_i.to_i] = k.to_i
         else
           u = k[:u].to_f
-          t = ret[k[:t].to_sym]
+          t = ret[k[:t][0].to_sym]
           x[k_i.to_i] = if u <= 0.5
                           Math.sqrt(u / 2) * (t.last - t.first) + t.first
                         else
