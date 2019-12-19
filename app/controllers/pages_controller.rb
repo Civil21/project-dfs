@@ -50,7 +50,7 @@ class PagesController < ApplicationController
           v_a[a_i.to_i] = k.to_i
         else
           u = k[:u].to_f
-          t = ret[k[:t][0].to_sym]
+          t = ret[k[:t][0].to_s]
           x[k_i.to_i] = if u <= 0.5
                           Math.sqrt(u / 2) * (t.last - t.first) + t.first
                         else
@@ -81,7 +81,7 @@ class PagesController < ApplicationController
     @y[4] = 1 - Math.sqrt((1..@n).collect { |i| (@v[i] * (1 - @r_a[i]))**2 }.sum)
     @df_y = {}
     @y.each do |y, v|
-      df_y.each do |df, value|
+      y_params.each do |df, value|
         if v > value[0] && v <= value[1]
           @df_y[y] = df
           break
@@ -120,7 +120,7 @@ class PagesController < ApplicationController
     @y_r[4] = 1 - Math.sqrt((1..@n).collect { |i| (@v[i] * (1 - @o[i]))**2 }.sum)
     @df_y_r = {}
     @y_r.each do |y, v|
-      df_y.each do |df, value|
+      y_params.each do |df, value|
         if v > value[0] && v <= value[1]
           @df_y_r[y] = df
           break
@@ -130,14 +130,10 @@ class PagesController < ApplicationController
   end
 
   def ret
-    { "M": [0, 20], "A": [20, 50], "H": [50, 80], "C": [80, 100] }
+    @ret ||= params[:table][:t].permit!.to_h.map { |k, v| [k, v.map(&:to_i)] }.to_h
   end
 
-  def df_y
-    { "незначний ступінь ризику безпеки МІС аеропорту": [0, 0.1],
-      "низький ступінь ризику безпеки МІС аеропорту": [0.1, 0.3],
-      "середній ступінь ризику безпеки МІС аеропорту": [0.3, 0.5],
-      "високий ступінь ризику безпеки МІС аеропорту": [0.5, 0.8],
-      "граничний ступінь ризику безпеки МІС аеропорту": [0.8, 1] }
+  def y_params
+    @y_params ||= params[:table][:df_y].permit!.to_h.map { |k, v| [k, v.map(&:to_f)] }.to_h
   end
 end

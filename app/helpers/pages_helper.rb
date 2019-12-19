@@ -2,7 +2,6 @@
 
 module PagesHelper
   def gen_as(n, m)
-    pp 'start'
     form_for(:table, url: cal_path, method: :get) do |f|
       [f.label(:n, 'Кількість активів'),
        f.number_field(:n, value: n, min: 1, max: 10, onChange: 'resize()'),
@@ -13,53 +12,101 @@ module PagesHelper
        f.fields_for(:t) do |s|
          [
            content_tag(:div, f.label('Наслідки загроз')),
-           s.fields_for(:m) do |t|
+           s.fields_for('M') do |t|
              content_tag(:div) do
                [
-                 t.number_field(0, value: 0, min: 0, max: 1, step: 0.1),
-                 t.number_field(1, value: 0.4, min: 0, max: 1, step: 0.1),
+                 t.number_field('', value: 0, min: 0, max: 100, step: 10),
+                 t.number_field('', value: 40, min: 0, max: 100, step: 10),
                  t.label('M – мінімальні наслідки загрози')
                ].join(' ').html_safe
              end
            end,
-           s.fields_for(:a) do |t|
+           s.fields_for('A') do |t|
              content_tag(:div) do
                [
-                 t.number_field(0, value: 0.4, min: 0, max: 1, step: 0.1),
-                 t.number_field(1, value: 0.6, min: 0, max: 1, step: 0.1),
+                 t.number_field('', value: 40, min: 0, max: 100, step: 10),
+                 t.number_field('', value: 60, min: 0, max: 100, step: 10),
                  t.label('A – середні наслідки загрози')
                ].join(' ').html_safe
              end
            end,
-           s.fields_for(:h) do |t|
+           s.fields_for('H') do |t|
              content_tag(:div) do
                [
-                 t.number_field(0, value: 0.6, min: 0, max: 1, step: 0.1),
-                 t.number_field(1, value: 0.8, min: 0, max: 1, step: 0.1),
+                 t.number_field('', value: 60, min: 0, max: 100, step: 10),
+                 t.number_field('', value: 80, min: 0, max: 100, step: 10),
                  t.label('H – високі наслідки загрози')
                ].join(' ').html_safe
              end
            end,
-           s.fields_for(:c) do |t|
+           s.fields_for('C') do |t|
              content_tag(:div) do
                [
-                 t.number_field(0, value: 0.8, min: 0, max: 1, step: 0.1),
-                 t.number_field(1, value: 1, min: 0, max: 1, step: 0.1),
+                 t.number_field('', value: 80, min: 0, max: 100, step: 10),
+                 t.number_field('', value: 100, min: 0, max: 100, step: 10),
                  t.label('C – критичні наслідки загрози')
                ].join(' ').html_safe
              end
            end
          ].join(' ').html_safe
        end,
+       f.fields_for(:df_y) do |s|
+         [content_tag(:div, f.label('Ступені ризику безпеки МІС аеропорту')),
+          s.fields_for('незначний') do |t|
+            content_tag(:div) do
+              [
+                t.number_field('', value: 0, min: 0, max: 1, step: 0.1),
+                t.number_field('', value: 0.1, min: 0, max: 1, step: 0.1),
+                t.label('незначний')
+              ].join(' ').html_safe
+            end
+          end,
+          s.fields_for('низький') do |t|
+            content_tag(:div) do
+              [
+                t.number_field('', value: 0.1, min: 0, max: 1, step: 0.1),
+                t.number_field('', value: 0.3, min: 0, max: 1, step: 0.1),
+                t.label('низький')
+              ].join(' ').html_safe
+            end
+          end,
+          s.fields_for('середній') do |t|
+            content_tag(:div) do
+              [
+                t.number_field('', value: 0.3, min: 0, max: 1, step: 0.1),
+                t.number_field('', value: 0.5, min: 0, max: 1, step: 0.1),
+                t.label('середній')
+              ].join(' ').html_safe
+            end
+          end,
+          s.fields_for('високий') do |t|
+            content_tag(:div) do
+              [
+                t.number_field('', value: 0.5, min: 0, max: 1, step: 0.1),
+                t.number_field('', value: 0.8, min: 0, max: 1, step: 0.1),
+                t.label('високий')
+              ].join(' ').html_safe
+            end
+          end,
+          s.fields_for('граничний') do |t|
+            content_tag(:div) do
+              [
+                t.number_field('', value: 0.8, min: 0, max: 1, step: 0.1),
+                t.number_field('', value: 1, min: 0, max: 1, step: 0.1),
+                t.label('граничний')
+              ].join(' ').html_safe
+            end
+          end].join(' ').html_safe
+       end,
        f.submit('Обрахувати', class: 'btn btn-primary', style: 'margin-bottom:10px'),
        f.fields_for(:us) do |s|
          content_tag :table do
            [content_tag(:tr,
-                        [content_tag(:td, 'Aктив'),
-                         content_tag(:td, 'Загроза'),
-                         content_tag(:td, 'Наслідок реалізації'),
-                         content_tag(:td, 'Ступінь можливості реалізації'),
-                         content_tag(:td, 'Тяжкість наслідків інциденту'),
+                        [content_tag(:td, 'Aктиви'),
+                         content_tag(:td, 'Загрози'),
+                         content_tag(:td, 'Наслідки загрози'),
+                         content_tag(:td, 'Степінь можливості реалізації загрози'),
+                         content_tag(:td, 'Тяжкість наслідків в активі'),
                          content_tag(:td, 'Вага активу'),
                          content_tag(:td, 'Прибуток роботи МІС (серверу) за годину (Євро)'),
                          content_tag(:td, 'Час відновлення роботи серверу (година)'),
